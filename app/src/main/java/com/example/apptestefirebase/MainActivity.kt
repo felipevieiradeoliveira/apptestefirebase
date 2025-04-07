@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -23,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -91,7 +93,11 @@ fun AppFireBase() {
         Arrangement.Center
     ) {
 
-        Row() {
+        Row(modifier = Modifier
+            .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+
+        ) {
             TextField(
                 value = name,
                 onValueChange = { name = it },
@@ -100,7 +106,10 @@ fun AppFireBase() {
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-        Row() {
+        Row(modifier = Modifier
+            .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
             TextField(
                 value = lastName,
                 onValueChange = { lastName = it },
@@ -109,7 +118,10 @@ fun AppFireBase() {
         }
         Spacer(modifier = Modifier.height(16.dp))
 
-        Row() {
+        Row(modifier = Modifier
+            .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+            ) {
             TextField(
                 value = born,
                 onValueChange = { born = it },
@@ -118,22 +130,25 @@ fun AppFireBase() {
         }
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(
-            onClick = {
-                //Validaçao básica para verificar se o born é número ou não
-                val bornInt = born.toIntOrNull()
-                if(bornInt != null) {
-                    sendDataToDatabase(name,lastName,bornInt)
+        Row(modifier = Modifier
+            .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center) {
+            Button(
+                onClick = {
+                    //Validaçao básica para verificar se o born é número ou não
+                    val bornInt = born.toIntOrNull()
+                    if (bornInt != null) {
+                        sendDataToDatabase(name, lastName, bornInt)
 
-                    name = ""
-                    lastName= ""
-                    born = ""
-                }
-                else{
-                    Log.w(TAG,"Nascimento 'inválido'.Por favor, insira um número.")
-                }
-            },
-            enabled = name.isNotBlank() && lastName.isNotBlank() && born.isNotBlank()
-        ) {Text("Enviar") }
+                        name = ""
+                        lastName = ""
+                        born = ""
+                    } else {
+                        Log.w(TAG, "Nascimento 'inválido'.Por favor, insira um número.")
+                    }
+                },
+                enabled = name.isNotBlank() && lastName.isNotBlank() && born.isNotBlank()
+            ) { Text("Enviar") }
+        }
     }
 }
