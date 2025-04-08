@@ -49,15 +49,18 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-fun sendDataToDatabase(first:String,last:String,born:Int) {
+fun sendDataToDatabase(nome:String,endereco:String,cep:Int,cidade:String,estado:String,bairro:String) {
 
     val db = Firebase.firestore
 
     val cliente = hashMapOf (
 
-        "first" to first,
-        "last" to last,
-        "born" to born,
+        "nome" to nome,
+        "endereco" to endereco,
+        "cep" to cep,
+        "cidade" to cidade,
+        "estado" to estado,
+        "bairro" to bairro
         )
 
 
@@ -83,9 +86,12 @@ fun AppFireBasePreview() {
 @Composable
 fun AppFireBase() {
 
-    var name by remember { mutableStateOf("") }
-    var lastName by remember { mutableStateOf("") }
-    var born by remember { mutableStateOf("") }
+    var nome by remember { mutableStateOf("") }
+    var endereco by remember { mutableStateOf("") }
+    var cidade by remember { mutableStateOf("") }
+    var cep by remember { mutableStateOf("") }
+    var bairro by remember { mutableStateOf("") }
+    var estado by remember { mutableStateOf("") }
 
     Column(modifier = Modifier
         .background(Color.Gray)
@@ -99,8 +105,8 @@ fun AppFireBase() {
 
         ) {
             TextField(
-                value = name,
-                onValueChange = { name = it },
+                value = nome,
+                onValueChange = { nome = it },
                 label = { Text("Nome") }
             )
         }
@@ -111,9 +117,9 @@ fun AppFireBase() {
             horizontalArrangement = Arrangement.Center
         ) {
             TextField(
-                value = lastName,
-                onValueChange = { lastName = it },
-                label = { Text("Sobrenome") }
+                value = endereco,
+                onValueChange = { endereco = it },
+                label = { Text("Endereço") }
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
@@ -123,9 +129,45 @@ fun AppFireBase() {
             horizontalArrangement = Arrangement.Center
             ) {
             TextField(
-                value = born,
-                onValueChange = { born = it },
-                label = { Text("Nascido em: ") }
+                value = cep,
+                onValueChange = { cep = it },
+                label = { Text("CEP ") }
+            )
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(modifier = Modifier
+            .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            TextField(
+                value = estado,
+                onValueChange = { estado = it },
+                label = { Text("Estado ") }
+            )
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(modifier = Modifier
+            .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            TextField(
+                value = cidade,
+                onValueChange = { cidade = it },
+                label = { Text("Cidade ") }
+            )
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(modifier = Modifier
+            .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            TextField(
+                value = bairro,
+                onValueChange = { bairro = it },
+                label = { Text("Bairro ") }
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
@@ -136,18 +178,21 @@ fun AppFireBase() {
             Button(
                 onClick = {
                     //Validaçao básica para verificar se o born é número ou não
-                    val bornInt = born.toIntOrNull()
-                    if (bornInt != null) {
-                        sendDataToDatabase(name, lastName, bornInt)
+                    val cepInt = cep.toIntOrNull()
+                    if (cepInt != null) {
+                        sendDataToDatabase(nome, endereco, cepInt, estado, cidade, bairro)
 
-                        name = ""
-                        lastName = ""
-                        born = ""
+                        nome = ""
+                        endereco = ""
+                        cep = ""
+                        estado = ""
+                        cidade = ""
+                        bairro = ""
                     } else {
                         Log.w(TAG, "Nascimento 'inválido'.Por favor, insira um número.")
                     }
                 },
-                enabled = name.isNotBlank() && lastName.isNotBlank() && born.isNotBlank()
+                enabled = nome.isNotBlank() && endereco.isNotBlank()&& cep.isNotBlank()&& estado.isNotBlank()&& cidade.isNotBlank()&& bairro.isNotBlank()
             ) { Text("Enviar") }
         }
     }
